@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome to Nomad Nexus - User Onboarding</title>
+  <link rel="icon" href="LOGO-removebg-preview.png">
+  <style>
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: #ffffff; color: #333333; line-height: 1.6; overflow-x: hidden;}
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .header { background: #000000; color: white; padding: 20px 0; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .nav { display: flex; justify-content: space-between; align-items: center; }
+    .logo-section { display: flex; align-items: center; gap: 16px; }
+    .logo { width: 45px; height: 45px; object-fit: contain; cursor: pointer; transition: all 0.3s ease; border-radius: 8px; }
+    .logo:hover { transform: scale(1.05); opacity: 0.8; }
+    .brand-name { font-size: 24px; font-weight: 700; color: white; letter-spacing: -0.5px; }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { color: white; text-decoration: none; transition: color 0.3s; }
+    .nav-links a:hover { color: #cccccc; }
+    .main { margin-top: 80px; min-height: 100vh; }
+    .hero { background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%); padding: 4rem 0; text-align: center; border-bottom: 3px solid #000000; }
+    .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; color: #000000; }
+    .hero p { font-size: 1.3rem; color: #666666; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .progress-container { background: #f0f0f0; padding: 2rem 0; border-bottom: 1px solid #e0e0e0; }
+    .progress-bar { background: #e0e0e0; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 1rem; }
+    .progress-fill { background: #000000; height: 100%; width: 0%; transition: width 0.5s ease; border-radius: 4px; }
+    .progress-steps { display: flex; justify-content: space-between; align-items: center; }
+    .step { display: flex; align-items: center; gap: 0.5rem; }
+    .step-number { background: #e0e0e0; color: #666666; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; transition: all 0.3s; }
+    .step.active .step-number { background: #000000; color: white; }
+    .step.completed .step-number { background: #333333; color: white; }
+    .onboarding { padding: 4rem 0; }
+    .step-content { display: none; max-width: 800px; margin: 0 auto; background: white; padding: 3rem; border-radius: 10px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); border: 2px solid #f0f0f0; }
+    .step-content.active { display: block; animation: fadeIn 0.5s ease-in; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .step-content h2 { font-size: 2.5rem; margin-bottom: 1.5rem; color: #000000; }
+    .step-content p { font-size: 1.1rem; margin-bottom: 2rem; color: #666666; }
+    .form-group { margin-bottom: 2rem; }
+    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #333333; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 1rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #000000; }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .checkbox-group, .radio-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+    .checkbox-item, .radio-item { display: flex; align-items: center; gap: 0.5rem; padding: 1rem; border: 2px solid #e0e0e0; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+    .checkbox-item:hover, .radio-item:hover { border-color: #000000; background: #f8f8f8; }
+    .checkbox-item input, .radio-item input { width: auto; }
+    .btn { background: #000000; color: white; border: none; padding: 1rem 2rem; border-radius: 8px; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-block; text-align: center; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    .btn:hover { background: #333333; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+    .btn-secondary { background: transparent; color: #333333; border: 2px solid #333333; }
+    .btn-secondary:hover { background: #333333; color: white; }
+    .btn-group { display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; }
+    .benefits { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin: 2rem 0; }
+    .benefit-card { background: #f8f8f8; padding: 2rem; border-radius: 10px; text-align: center; border: 2px solid #e0e0e0; transition: all 0.3s; }
+    .benefit-card:hover { border-color: #000000; transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    .benefit-icon { font-size: 3rem; margin-bottom: 1rem; color: #000000; }
+    .benefit-card h3 { font-size: 1.5rem; margin-bottom: 1rem; color: #000000; }
+    .success-content { text-align: center; padding: 4rem 2rem; }
+    .success-icon { font-size: 5rem; color: #000000; margin-bottom: 2rem; }
+    .success-content h2 { font-size: 3rem; margin-bottom: 2rem; color: #000000; }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero h1 { font-size: 2.5rem; }
+      .hero p { font-size: 1.1rem; }
+      .step-content { margin: 0 1rem; padding: 2rem 1rem; }
+      .step-content h2 { font-size: 2rem; }
+      .progress-steps { flex-direction: column; gap: 1rem; text-align: center; }
+      .checkbox-group, .radio-group { grid-template-columns: 1fr; }
+      .btn-group { flex-direction: column; }
+      .logo { width: 40px; height: 40px; }
+      .brand-name { font-size: 20px; }
+    }
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 2rem; }
+      .step-content h2 { font-size: 1.8rem; }
+      .benefits { grid-template-columns: 1fr; }
+      .logo { width: 36px; height: 36px; }
+      .brand-name { font-size: 18px; }
+    }
+    .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid #ffffff; border-radius: 50%; border-top-color: transparent; animation: spin 1s ease-in-out infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    .nav-links.mobile-open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: #000000; padding: 1rem; }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <nav class="nav">
+        <div class="logo-section">
+          <img class="logo" src="white_logo.jpeg" alt="Nomad Nexus Logo">
+          <div class="brand-name">Travel Ease</div>
+        </div>
+        <div class="nav-links">
+          <a href="#home">Home</a>
+          <a href="#community">Community</a>
+          <a href="#guides">City Guides</a>
+          <a href="#jobs">Jobs</a>
+          <a href="#benefits">Benefits</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main">
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="container">
+        <h1>Welcome to Our Global Community</h1>
+        <p>Join the leading platform for digital nomads and remote professionals. Live everywhere, work anywhere, and inspire each other.</p>
+      </div>
+    </section>
+
+    <!-- Progress Section -->
+    <section class="progress-container">
+      <div class="container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-steps">
+          <div class="step active" data-step="1">
+            <div class="step-number">1</div>
+            <span>Personal Info</span>
+          </div>
+          <div class="step" data-step="2">
+            <div class="step-number">2</div>
+            <span>Nomad Profile</span>
+          </div>
+          <div class="step" data-step="3">
+            <div class="step-number">3</div>
+            <span>Preferences</span>
+          </div>
+          <div class="step" data-step="4">
+            <div class="step-number">4</div>
+            <span>Complete</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Onboarding Steps -->
+    <section class="onboarding">
+      <div class="container">
+        <!-- Step 1: Personal Information -->
+        <div class="step-content active" data-step="1">
+          <h2>Let's Get Started</h2>
+          <p>Tell us a bit about yourself to personalize your Digital Nomad World experience.</p>
+
+          <div class="form-group">
+            <label for="firstName">First Name *</label>
+            <input type="text" id="firstName" required>
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Last Name *</label>
+            <input type="text" id="lastName" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="currentLocation">Current Location</label>
+            <input type="text" id="currentLocation" placeholder="City, Country">
+          </div>
+
+          <div class="btn-group">
+            <button class="btn" onclick="nextStep()">Continue</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Nomad Profile -->
+        <div class="step-content" data-step="2">
+          <h2>Your Nomad Journey</h2>
+          <p>Help us understand your digital nomad experience and goals.</p>
+
+          <div class="form-group">
+            <label for="experience">Digital Nomad Experience *</label>
+            <select id="experience" required>
+              <option value="">Select your experience level</option>
+              <option value="aspiring">Aspiring Digital Nomad</option>
+              <option value="beginner">Beginner (0-1 years)</option>
+              <option value="intermediate">Intermediate (1-3 years)</option>
+              <option value="experienced">Experienced (3+ years)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="workField">Work Field *</label>
+            <select id="workField" required>
+              <option value="">Select your work field</option>
+              <option value="tech">Technology</option>
+              <option value="design">Design</option>
+              <option value="marketing">Marketing</option>
+              <option value="writing">Writing/Content</option>
+              <option value="consulting">Consulting</option>
+              <option value="finance">Finance</option>
+              <option value="education">Education</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="bio">Brief Bio (Optional)</label>
+            <textarea id="bio" placeholder="Tell us about yourself, your work, and your nomad journey..."></textarea>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+            <button class="btn" onclick="nextStep()">Continue</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Preferences -->
+        <div class="step-content" data-step="3">
+          <h2>Your Preferences</h2>
+          <p>Customize your experience by selecting your interests and preferences.</p>
+
+          <div class="form-group">
+            <label>What interests you most? (Select all that apply)</label>
+            <div class="checkbox-group">
+              <div class="checkbox-item">
+                <input type="checkbox" id="networking" value="networking">
+                <label for="networking">Networking & Events</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="coworking" value="coworking">
+                <label for="coworking">Co-working Spaces</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="travel" value="travel">
+                <label for="travel">Travel Tips</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="remote-jobs" value="remote-jobs">
+                <label for="remote-jobs">Remote Job Opportunities</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="city-guides" value="city-guides">
+                <label for="city-guides">City Guides</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="discounts" value="discounts">
+                <label for="discounts">Member Discounts</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Preferred Communication</label>
+            <div class="radio-group">
+              <div class="radio-item">
+                <input type="radio" id="email-weekly" name="communication" value="weekly">
+                <label for="email-weekly">Weekly Newsletter</label>
+              </div>
+              <div class="radio-item">
+                <input type="radio" id="email-monthly" name="communication" value="monthly">
+                <label for="email-monthly">Monthly Updates</label>
+              </div>
+              <div class="radio-item">
+                <input type="radio" id="email-minimal" name="communication" value="minimal">
+                <label for="email-minimal">Important Updates Only</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-group">
+            <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+            <button class="btn" onclick="completeOnboarding()">Complete Setup</button>
+          </div>
+        </div>
+
+        <!-- Step 4: Complete -->
+        <div class="step-content" data-step="4">
+          <div class="success-content">
+            <div class="success-icon">🎉</div>
+            <h2>Welcome to the Community!</h2>
+            <p>Your account has been successfully created. You're now part of the leading global community of digital nomads and remote professionals.</p>
+
+            <div class="benefits">
+              <div class="benefit-card">
+                <div class="benefit-icon">🌍</div>
+                <h3>City Guides</h3>
+                <p>Access comprehensive guides crafted by experienced nomads</p>
+              </div>
+              <div class="benefit-card">
+                <div class="benefit-icon">🤝</div>
+                <h3>Global Network</h3>
+                <p>Connect with like-minded professionals worldwide</p>
+              </div>
+              <div class="benefit-card">
+                <div class="benefit-icon">💰</div>
+                <h3>Exclusive Benefits</h3>
+                <p>Enjoy discounts on co-living, travel insurance, and more</p>
+              </div>
+            </div>
+
+            <div class="btn-group">
+              <a href="#" class="btn">Explore Community</a>
+              <a href="#" class="btn btn-secondary">View City Guides</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Onboarding State Management (fixed syntax + safer logic)
+    class OnboardingManager {
+      constructor() {
+        this.currentStep = 1;
+        this.totalSteps = document.querySelectorAll('.step-content').length || 4;
+        this.userData = {};
+        this.init();
+      }
+
+      init() {
+        this.updateProgress();
+        this.bindEvents();
+        this.validateForm();
+      }
+
+      bindEvents() {
+        // Validate on input/change
+        const inputs = document.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+          input.addEventListener('input', () => this.validateForm());
+          input.addEventListener('change', () => this.validateForm());
+        });
+
+        // Keyboard navigation (Enter)
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            // Prevent Enter inside textarea from progressing
+            if (document.activeElement && document.activeElement.tagName.toLowerCase() === 'textarea') return;
+
+            if (this.isCurrentStepValid()) {
+              if (this.currentStep < this.totalSteps) {
+                this.nextStep();
+              } else if (this.currentStep === 3) {
+                this.completeOnboarding();
+              }
+            } else {
+              this.showValidationErrors();
+            }
+          }
+        });
+      }
+
+      updateProgress() {
+        const progressFill = document.getElementById('progressFill');
+        const progress = ((this.currentStep - 1) / (this.totalSteps - 1)) * 100;
+        if (progressFill) progressFill.style.width = progress + '%';
+
+        // Update step indicators
+        document.querySelectorAll('.step').forEach((step, index) => {
+          const stepNum = index + 1;
+          step.classList.remove('active', 'completed');
+
+          if (stepNum < this.currentStep) {
+            step.classList.add('completed');
+          } else if (stepNum === this.currentStep) {
+            step.classList.add('active');
+          }
+        });
+
+        // Show current step content
+        document.querySelectorAll('.step-content').forEach((content, index) => {
+          content.classList.remove('active');
+          if (index + 1 === this.currentStep) {
+            content.classList.add('active');
+          }
+        });
+
+        // After switching steps, re-validate to set button state
+        this.validateForm();
+      }
+
+      nextStep() {
+        if (!this.isCurrentStepValid()) {
+          this.showValidationErrors();
+          return;
+        }
+
+        this.saveCurrentStepData();
+
+        if (this.currentStep < this.totalSteps) {
+          this.currentStep++;
+          this.updateProgress();
+          this.scrollToTop();
+        }
+      }
+
+      prevStep() {
+        if (this.currentStep > 1) {
+          this.currentStep--;
+          this.updateProgress();
+          this.scrollToTop();
+        }
+      }
+
+      completeOnboarding() {
+        if (!this.isCurrentStepValid()) {
+          this.showValidationErrors();
+          return;
+        }
+
+        this.saveCurrentStepData();
+
+        // Find the primary continue/complete button in the current step (if any)
+        const currentStepContent = document.querySelector(`.step-content[data-step="${this.currentStep}"]`);
+        const btn = currentStepContent ? currentStepContent.querySelector('.btn:not(.btn-secondary)') : null;
+        const originalText = btn ? btn.textContent : '';
+
+        if (btn) {
+          btn.innerHTML = '<span class="loading"></span> Processing...';
+          btn.disabled = true;
+        }
+
+        // Simulate API call
+        setTimeout(() => {
+          this.currentStep = this.totalSteps;
+          this.updateProgress();
+          this.scrollToTop();
+
+          if (btn) {
+            btn.textContent = originalText;
+            btn.disabled = false;
+          }
+
+          // In a real app, send this.userData to your server here
+          console.log('User data collected:', this.userData);
+        }, 2000);
+      }
+
+      isCurrentStepValid() {
+        const currentStepContent = document.querySelector(`.step-content[data-step="${this.currentStep}"]`);
+        if (!currentStepContent) return true;
+
+        const requiredInputs = currentStepContent.querySelectorAll('input[required], select[required]');
+        return Array.from(requiredInputs).every(input => {
+          return input.value.trim() !== '';
+        });
+      }
+
+      showValidationErrors() {
+        const currentStepContent = document.querySelector(`.step-content[data-step="${this.currentStep}"]`);
+        if (!currentStepContent) return;
+
+        const requiredInputs = currentStepContent.querySelectorAll('input[required], select[required]');
+
+        requiredInputs.forEach(input => {
+          if (input.value.trim() === '') {
+            input.style.borderColor = '#ff4444';
+            setTimeout(() => {
+              input.style.borderColor = '#e0e0e0';
+            }, 2000);
+          }
+        });
+
+        this.showNotification('Please fill in all required fields', 'error');
+      }
+
+      saveCurrentStepData() {
+        const currentStepContent = document.querySelector(`.step-content[data-step="${this.currentStep}"]`);
+        if (!currentStepContent) return;
+
+        const inputs = currentStepContent.querySelectorAll('input, select, textarea');
+
+        inputs.forEach(input => {
+          if (input.type === 'checkbox') {
+            if (!this.userData.interests) this.userData.interests = [];
+            if (input.checked && !this.userData.interests.includes(input.value)) {
+              this.userData.interests.push(input.value);
+            }
+          } else if (input.type === 'radio') {
+            if (input.checked) {
+              this.userData[input.name] = input.value;
+            }
+          } else {
+            if (input.id) this.userData[input.id] = input.value;
+          }
+        });
+      }
+
+      validateForm() {
+        const currentStepContent = document.querySelector(`.step-content[data-step="${this.currentStep}"]`);
+        if (!currentStepContent) return;
+
+        const continueBtn = currentStepContent.querySelector('.btn:not(.btn-secondary)');
+        if (!continueBtn) return;
+
+        if (this.isCurrentStepValid()) {
+          continueBtn.style.opacity = '1';
+          continueBtn.style.pointerEvents = 'auto';
+        } else {
+          continueBtn.style.opacity = '0.7';
+          continueBtn.style.pointerEvents = 'none'; // disable clicking when invalid
+        }
+      }
+
+      showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+          position: fixed;
+          top: 100px;
+          right: 20px;
+          background: ${type === 'error' ? '#ff4444' : '#000000'};
+          color: white;
+          padding: 1rem 2rem;
+          border-radius: 8px;
+          z-index: 10000;
+          animation: slideIn 0.3s ease;
+        `;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 3000);
+      }
+
+      scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // Initialize onboarding manager
+    const onboardingManager = new OnboardingManager();
+
+    // Global functions for buttons
+    function nextStep() { onboardingManager.nextStep(); }
+    function prevStep() { onboardingManager.prevStep(); }
+    function completeOnboarding() { onboardingManager.completeOnboarding(); }
+
+    // Initialize smooth scrolling for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Mobile menu toggle (if needed)
+    function toggleMobileMenu() {
+      const navLinks = document.querySelector('.nav-links');
+      navLinks.classList.toggle('mobile-open');
+    }
+
+    // Form enhancements
+    document.addEventListener('DOMContentLoaded', function() {
+      const firstInput = document.querySelector('.step-content.active input');
+      if (firstInput) firstInput.focus();
+    });
+  </script>
+</body>
+</html>
